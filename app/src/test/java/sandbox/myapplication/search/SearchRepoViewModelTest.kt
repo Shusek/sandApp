@@ -19,7 +19,7 @@ class SearchRepoViewModelTest {
     val viewModel = SearchRepoViewModel(service)
     @Test
     fun shouldSearchReturnProperCountOfLoadedItems() {
-         val expectedRepositories = listOf(Repository(1), Repository(2))
+        val expectedRepositories = listOf(Repository(1), Repository(2))
         coEvery { pagedSearchRepository.getRepositories(any(), any()) } returns expectedRepositories
 
 
@@ -28,7 +28,6 @@ class SearchRepoViewModelTest {
             assertEquals(expectedRepositories, it!!)
         }
     }
-
 
     @Test
     fun shouldSearchReturnEmptyListWhenQueryIsEmptyWithoutCallRepository() {
@@ -40,5 +39,22 @@ class SearchRepoViewModelTest {
         verify {
             pagedSearchRepository wasNot called
         }
+    }
+
+    @Test
+    fun shouldLoadDataFromMultiplePages() {
+        val firstPage = (1..100).map { Repository(it.toLong()) }
+        val secondPage = (100..150).map { Repository(it.toLong()) }
+
+        coEvery { pagedSearchRepository.getRepositories(eq(1), any()) } returns firstPage
+        coEvery { pagedSearchRepository.getRepositories(eq(2), any()) } returns secondPage
+
+        val liveData = service.search("abc")
+        liveData.observeForever {
+            val expectedAllItems = firstPage + secondPage
+            it!!.loadAround(expectedAllItems.size - 1)
+            assertEquals(expectedAllItems, it)
+        }
+
     }
 }
