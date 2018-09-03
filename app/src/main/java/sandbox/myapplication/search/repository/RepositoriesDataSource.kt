@@ -2,6 +2,7 @@ package sandbox.myapplication.search.repository
 
 import android.arch.paging.DataSource
 import android.arch.paging.PageKeyedDataSource
+import android.util.Log
 import kotlinx.coroutines.experimental.runBlocking
 import sandbox.myapplication.search.Repository
 
@@ -12,6 +13,7 @@ class RepositoriesDataSource(private val repository: PagedSearchRepository,
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Repository>) {
         runBlocking {
             val repositories = repository.getRepositories(1, query)
+
                 callback.onResult(repositories, 1, 2)
             }
 

@@ -1,9 +1,9 @@
 package sandbox.myapplication.search.repository
 
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import io.mockk.verifyAll
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Assert.assertEquals
@@ -14,7 +14,7 @@ import sandbox.myapplication.common.api.RepositoryApi
 import sandbox.myapplication.search.Repository
 
 class GithubPagedSearchRepositoryTest {
-    private val api: GithubApi = mock()
+    private val api: GithubApi = mockk()
     private val searRepository = GithubPagedSearchRepository(api)
 
     @Test
@@ -22,9 +22,8 @@ class GithubPagedSearchRepositoryTest {
         mockReturnRepositories(14, "someQuery", emptyList())
         searRepository.getRepositories(14, "someQuery")
 
-        verify(api).getRepositories(14, "someQuery")
-        verifyNoMoreInteractions(api)
-    }
+        verifyAll { api.getRepositories(14, "someQuery") }
+     }
 
     @Test
     fun shouldRepositoryProperParsed() = runBlocking {
@@ -38,10 +37,9 @@ class GithubPagedSearchRepositoryTest {
     }
 
     private fun mockReturnRepositories(page: Int, query: String, items: List<RepositoryApi>) {
-        whenever(api.getRepositories(page, query))
-                .thenReturn(async {
-                    DataRepositoriesApi(items)
-                })
+        every { api.getRepositories(page, query) } returns async {
+            DataRepositoriesApi(items)
+        }
     }
 
 }

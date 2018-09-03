@@ -1,9 +1,8 @@
 package sandbox.myapplication.search
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.experimental.runBlocking
+import io.mockk.coEvery
+import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -11,18 +10,20 @@ import sandbox.myapplication.search.repository.PagedSearchRepository
 import sandbox.myapplication.search.repository.PagedSearchService
 
 class SearchRepoViewModelTest {
-    val repositoryPaged: PagedSearchRepository = mock()
-    val service = PagedSearchService(repositoryPaged)
-    val viewModel = SearchRepoViewModel(service)
     @get:Rule
     val instantExecutor = InstantTaskExecutorRule()
 
     @Test
-    fun shouldSearch() = runBlocking {
-        whenever(repositoryPaged.getRepositories(1, "retrofit")).thenReturn(emptyList())
+    fun shouldSearchReturnProperCountOfLoadedItems() {
+        val pagedSearchRepository = mockk<PagedSearchRepository>()
+        val expectedRepositories = listOf(Repository(1), Repository(2))
+        coEvery { pagedSearchRepository.getRepositories(any(), any()) } returns expectedRepositories
+        val service = PagedSearchService(pagedSearchRepository)
+        val viewModel = SearchRepoViewModel(service)
+
         viewModel.search("retrofit")
         viewModel.repositoriesPagedList.observeForever {
-            assertEquals(0, it!!.size)
+            assertEquals(expectedRepositories, it!!)
         }
     }
 }
