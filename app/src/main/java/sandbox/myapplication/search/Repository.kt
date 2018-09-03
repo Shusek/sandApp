@@ -1,4 +1,3 @@
 package sandbox.myapplication.search
 
-class Repository {
-}
+data class Repository(val id: Long)
