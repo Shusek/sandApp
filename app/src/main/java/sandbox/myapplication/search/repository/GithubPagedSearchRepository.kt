@@ -8,6 +8,14 @@ class GithubPagedSearchRepository(private val githubApi: GithubApi) : PagedSearc
     override suspend fun getRepositories(page: Int, searchQuery: String): List<Repository> {
         return githubApi.getRepositories(page, searchQuery).await()
                 .items
-                .map { Repository(it.id) }
+                .map { data ->
+                    with(data) {
+                        Repository(id,
+                                owner.login,
+                                name,
+                                description?.let { it } ?: "",
+                                stargazers_count)
+                    }
+                }
     }
 }

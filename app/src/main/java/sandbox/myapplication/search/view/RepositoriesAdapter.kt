@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.repository_list_item.*
 import sampleapp.istari.myapplication.R
 import sandbox.myapplication.search.Repository
 
@@ -14,7 +15,7 @@ class RepositoriesAdapter(private val onClick: (Repository) -> Unit) :
         PagedListAdapter<Repository, RepositoriesAdapter.RepositoryViewHolder>(RepositoriesCallback) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
         return RepositoryViewHolder(parent.inflate(R.layout.repository_list_item))
     }
 
@@ -26,6 +27,11 @@ class RepositoriesAdapter(private val onClick: (Repository) -> Unit) :
             RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bind(item: Repository, onClick: (Repository) -> Unit) {
+            userName.text = item.userName
+            repoName.text = item.repoName
+            description.text = item.description
+            stars.text = item.stars.toString()
+            containerView.setOnClickListener { onClick(item) }
         }
     }
 }
