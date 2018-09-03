@@ -6,10 +6,10 @@ import android.arch.paging.PagedList
 import sandbox.myapplication.search.Repository
 import javax.inject.Inject
 
-class PagedSearchService @Inject constructor(private val searchRepository: SearchRepository) {
+class PagedSearchService @Inject constructor(private val pagedSearchRepository: PagedSearchRepository) {
     fun search(queryFilter: String): LiveData<PagedList<Repository>> {
         return LivePagedListBuilder(
-                RepositoriesDataSource.getFactory(searchRepository, queryFilter),
+                RepositoriesDataSource.getFactory(pagedSearchRepository, queryFilter),
               MAXIMUM_REPOS_PER_REQUEST).build()
     }
 

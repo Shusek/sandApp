@@ -5,7 +5,7 @@ import android.arch.paging.PageKeyedDataSource
 import kotlinx.coroutines.experimental.runBlocking
 import sandbox.myapplication.search.Repository
 
-class RepositoriesDataSource(private val service: SearchRepository,
+class RepositoriesDataSource(private val service: PagedSearchRepository,
                              private val query: String)
     : PageKeyedDataSource<Int, Repository>() {
 
@@ -31,11 +31,11 @@ class RepositoriesDataSource(private val service: SearchRepository,
     }
 
     companion object {
-        fun getFactory(repository: SearchRepository,
+        fun getFactory(repositoryPaged: PagedSearchRepository,
                        query: String): Factory<Int, Repository> {
             return object : DataSource.Factory<Int, Repository>() {
                 override fun create(): DataSource<Int, Repository> {
-                    return RepositoriesDataSource(repository, query)
+                    return RepositoriesDataSource(repositoryPaged, query)
                 }
             }
         }
