@@ -13,9 +13,9 @@ import sandbox.myapplication.common.api.GithubApi
 import sandbox.myapplication.common.api.RepositoryApi
 import sandbox.myapplication.search.Repository
 
-class SearchRepositoryTest {
+class GithubPagedSearchRepositoryTest {
     private val api: GithubApi = mock()
-    private val searRepository = SearchRepository(api)
+    private val searRepository = GithubPagedSearchRepository(api)
 
     @Test
     fun shouldRepositoryCallApiWithPageAndQuery() = runBlocking {

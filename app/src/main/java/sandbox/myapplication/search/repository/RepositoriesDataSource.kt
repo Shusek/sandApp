@@ -5,23 +5,21 @@ import android.arch.paging.PageKeyedDataSource
 import kotlinx.coroutines.experimental.runBlocking
 import sandbox.myapplication.search.Repository
 
-class RepositoriesDataSource(private val service: PagedSearchRepository,
+class RepositoriesDataSource(private val repository: PagedSearchRepository,
                              private val query: String)
     : PageKeyedDataSource<Int, Repository>() {
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Repository>) {
-        try {
-            runBlocking {
-                val repositories = service.getRepositories(1, query)
+        runBlocking {
+            val repositories = repository.getRepositories(1, query)
                 callback.onResult(repositories, 1, 2)
             }
-        } catch (e: Exception) {
-        }
+
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Repository>) {
         runBlocking {
-            val repositories = service.getRepositories(params.key, query)
+            val repositories = repository.getRepositories(params.key, query)
             callback.onResult(repositories, params.key + 1)
         }
     }

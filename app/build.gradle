@@ -44,6 +44,7 @@ dependencies {
 
     //components
     implementation "android.arch.lifecycle:extensions:$architectureComponentsVersion"
+    implementation "android.arch.core:core-testing:$architectureComponentsVersion"
     implementation "android.arch.paging:runtime:$paging_version"
     implementation "android.arch.navigation:navigation-runtime:$navigation_version"
     implementation "android.arch.navigation:navigation-fragment:$navigation_version"
