@@ -1,0 +1,15 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/main_screen">
+
+    <fragment
+        android:id="@+id/main_screen"
+        android:name="sandbox.myapplication.search.view.SearchListFragment"
+        android:label="main screen"
+        tools:layout="@layout/repository_list">
+
+    </fragment>
+
+
+</navigation>

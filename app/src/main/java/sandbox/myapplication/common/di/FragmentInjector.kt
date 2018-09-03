@@ -3,7 +3,7 @@ package sandbox.myapplication.common.di
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import sandbox.myapplication.details.RepositoryDetailsFragment
-import sandbox.myapplication.search.SearchListFragment
+import sandbox.myapplication.search.view.SearchListFragment
 
 
 @Module
