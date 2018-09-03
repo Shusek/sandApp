@@ -14,7 +14,7 @@ class PagedSearchService @Inject constructor(private val pagedSearchRepository: 
     }
 
     companion object {
-        private const val MAXIMUM_REPOS_PER_REQUEST = 100
+        private const val MAXIMUM_REPOS_PER_REQUEST = 1
     }
 
 

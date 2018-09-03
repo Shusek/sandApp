@@ -11,6 +11,9 @@ class RepositoriesDataSource(private val repository: PagedSearchRepository,
     : PageKeyedDataSource<Int, Repository>() {
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Repository>) {
+        if(query.isEmpty()){
+            return
+        }
         runBlocking {
             val repositories = repository.getRepositories(1, query)
 
