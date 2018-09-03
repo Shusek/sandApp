@@ -16,7 +16,6 @@ class RepositoriesDataSource(private val service: SearchRepository,
                 callback.onResult(repositories, 1, 2)
             }
         } catch (e: Exception) {
-
         }
     }
 
@@ -28,7 +27,7 @@ class RepositoriesDataSource(private val service: SearchRepository,
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Repository>) {
-//not required for this use case
+        //not required for this use case
     }
 
     companion object {

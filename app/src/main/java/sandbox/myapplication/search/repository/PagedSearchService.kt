@@ -4,8 +4,9 @@ import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import sandbox.myapplication.search.Repository
+import javax.inject.Inject
 
-class PagedSearchService(private val searchRepository: SearchRepository) {
+class PagedSearchService @Inject constructor(private val searchRepository: SearchRepository) {
     fun search(queryFilter: String): LiveData<PagedList<Repository>> {
         return LivePagedListBuilder(
                 RepositoriesDataSource.getFactory(searchRepository, queryFilter),
