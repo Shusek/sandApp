@@ -6,16 +6,15 @@ import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.view.*
 import androidx.navigation.Navigation
-import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.repository_list.*
 import sampleapp.istari.myapplication.R
+import sandbox.myapplication.common.ToolbarFragment
 import sandbox.myapplication.common.viewmodel.ViewModelFactory
 import sandbox.myapplication.search.SearchRepoViewModel
 import javax.inject.Inject
 
 
-class SearchListFragment : DaggerFragment() {
-
+class SearchListFragment : ToolbarFragment() {
     @Inject
     lateinit var factory: ViewModelFactory<SearchRepoViewModel>
     private val viewModel by lazy {
@@ -27,6 +26,7 @@ class SearchListFragment : DaggerFragment() {
             navigationController.navigate(repositoryDetailAction, null)
         }
     }
+
     private val navigationController by lazy {
         Navigation.findNavController(view!!)
     }
@@ -35,17 +35,16 @@ class SearchListFragment : DaggerFragment() {
         return inflater.inflate(R.layout.repository_list, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         repositoryList.adapter = listAdapter
         viewModel.repositoriesPagedList.observe(this, Observer {
             listAdapter.submitList(it)
         })
     }
+
+    override fun toolbarId() = R.id.searchToolbar
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
