@@ -18,7 +18,9 @@
         android:name="sandbox.myapplication.details.RepositoryDetailsFragment"
         android:label="main screen"
         tools:layout="@layout/repository_details">
-
+        <argument
+            android:name="repository"
+            app:argType="sandbox.myapplication.search.Repository" />
     </fragment>
 
 </navigation>

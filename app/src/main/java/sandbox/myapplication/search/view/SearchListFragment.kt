@@ -23,7 +23,8 @@ class SearchListFragment : DaggerFragment() {
     }
     private val listAdapter by lazy {
         RepositoriesAdapter {
-            navigationController.navigate(R.id.repository_detail_action, null)
+            val repositoryDetailAction = SearchListFragmentDirections.repositoryDetailAction(it)
+            navigationController.navigate(repositoryDetailAction, null)
         }
     }
     private val navigationController by lazy {
