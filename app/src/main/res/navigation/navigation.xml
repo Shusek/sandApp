@@ -8,8 +8,17 @@
         android:name="sandbox.myapplication.search.view.SearchListFragment"
         android:label="main screen"
         tools:layout="@layout/repository_list">
-
+        <action
+            android:id="@+id/repository_detail_action"
+            app:destination="@+id/repository_detail_screen" />
     </fragment>
 
+    <fragment
+        android:id="@+id/repository_detail_screen"
+        android:name="sandbox.myapplication.details.RepositoryDetailsFragment"
+        android:label="main screen"
+        tools:layout="@layout/repository_details">
+
+    </fragment>
 
 </navigation>

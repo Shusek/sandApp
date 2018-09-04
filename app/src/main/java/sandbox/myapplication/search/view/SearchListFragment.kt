@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.view.*
+import androidx.navigation.Navigation
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.repository_list.*
 import sampleapp.istari.myapplication.R
@@ -20,7 +21,14 @@ class SearchListFragment : DaggerFragment() {
     private val viewModel by lazy {
         ViewModelProviders.of(this, factory).get(SearchRepoViewModel::class.java)
     }
-    private val listAdapter by lazy { RepositoriesAdapter {} }
+    private val listAdapter by lazy {
+        RepositoriesAdapter {
+            navigationController.navigate(R.id.repository_detail_action, null)
+        }
+    }
+    private val navigationController by lazy {
+        Navigation.findNavController(view!!)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.repository_list, container, false)
