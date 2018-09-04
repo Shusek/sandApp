@@ -37,6 +37,8 @@ class SearchListFragment : ToolbarFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getActionBar().setDisplayShowTitleEnabled(false)
+        getActionBar().setDisplayShowHomeEnabled(false)
         setHasOptionsMenu(true)
         repositoryList.adapter = listAdapter
         viewModel.repositoriesPagedList.observe(this, Observer {
@@ -48,7 +50,11 @@ class SearchListFragment : ToolbarFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
-        val searchItem = menu.findItem(R.id.action_search).actionView as SearchView
+        val findItem = menu.findItem(R.id.action_search)
+        val searchItem = findItem.actionView as SearchView
+        searchItem.setIconifiedByDefault(false)
+        searchItem.maxWidth = Integer.MAX_VALUE
+
         searchItem.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return true
