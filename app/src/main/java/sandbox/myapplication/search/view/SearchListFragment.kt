@@ -20,11 +20,18 @@ class SearchListFragment : ToolbarFragment() {
     private val viewModel by lazy {
         ViewModelProviders.of(this, factory).get(SearchRepoViewModel::class.java)
     }
+    private var lastSearch: String? = null
+
     private val listAdapter by lazy {
         RepositoriesAdapter {
             val repositoryDetailAction = SearchListFragmentDirections.repositoryDetailAction(it)
             navigationController.navigate(repositoryDetailAction, null)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lastSearch = savedInstanceState?.getString(LAST_SEARCH_KEY)
     }
 
     private val navigationController by lazy {
@@ -46,26 +53,34 @@ class SearchListFragment : ToolbarFragment() {
         })
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(LAST_SEARCH_KEY, lastSearch)
+    }
+
     override fun toolbarId() = R.id.searchToolbar
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
         val findItem = menu.findItem(R.id.action_search)
-        val searchItem = findItem.actionView as SearchView
-        searchItem.setIconifiedByDefault(false)
-        searchItem.maxWidth = Integer.MAX_VALUE
+        (findItem.actionView as SearchView).apply {
+            maxWidth = Integer.MAX_VALUE
+            setIconifiedByDefault(false)
+            setQuery(lastSearch, true)
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return true
+                }
 
-        searchItem.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return true
-            }
+                override fun onQueryTextChange(newText: String): Boolean {
+                    viewModel.search(newText)
+                    lastSearch = newText
+                    return true
+                }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.search(newText)
-                return true
-            }
-
-        })
-
+            })
+        }
     }
 }
+
+private const val LAST_SEARCH_KEY = "LAST_SEARCH_KEY"
