@@ -8,6 +8,7 @@ import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import sandbox.myapplication.common.RepositoryFactory
 import sandbox.myapplication.search.repository.PagedSearchRepository
 import sandbox.myapplication.search.repository.PagedSearchService
 
@@ -19,7 +20,9 @@ class SearchRepoViewModelTest {
     val viewModel = SearchRepoViewModel(service)
     @Test
     fun shouldSearchReturnProperCountOfLoadedItems() {
-        val expectedRepositories = listOf(Repository(1), Repository(2))
+        val expectedRepositories = listOf(
+                RepositoryFactory.createRepository(1),
+                RepositoryFactory.createRepository(2))
         coEvery { pagedSearchRepository.getRepositories(any(), any()) } returns expectedRepositories
 
 
@@ -43,8 +46,8 @@ class SearchRepoViewModelTest {
 
     @Test
     fun shouldLoadDataFromMultiplePages() {
-        val firstPage = (1..100).map { Repository(it.toLong()) }
-        val secondPage = (100..150).map { Repository(it.toLong()) }
+        val firstPage = (1..100).map { RepositoryFactory.createRepository(it.toLong()) }
+        val secondPage = (100..150).map { RepositoryFactory.createRepository(it.toLong()) }
 
         coEvery { pagedSearchRepository.getRepositories(eq(1), any()) } returns firstPage
         coEvery { pagedSearchRepository.getRepositories(eq(2), any()) } returns secondPage
@@ -52,7 +55,7 @@ class SearchRepoViewModelTest {
         val liveData = service.search("abc")
         liveData.observeForever {
             val expectedAllItems = firstPage + secondPage
-            it!!.loadAround(expectedAllItems.size - 1)
+            it!!.loadAround(45)
             assertEquals(expectedAllItems, it)
         }
 

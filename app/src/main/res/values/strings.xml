@@ -2,4 +2,6 @@
     <string name="app_name">My Application</string>
     <string name="menu_search">Search</string>
     <string name="stars">stars</string>
+    <string name="readme_error_not_found">This repository no have readme file. Maybe it is time contribute to create it?</string>
+    <string name="readme_error_network_issue">Cannot fetch repository, click here to try again.</string>
 </resources>

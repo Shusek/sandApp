@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
-
     @Provides
     @Singleton
     fun providesOkHttpClient(interceptor: Interceptor): OkHttpClient {
@@ -29,11 +28,19 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun providesInterceptor(): Interceptor {
+    fun providesDefaultAcceptJsonInterceptor(): Interceptor {
         return Interceptor { chain ->
-            chain.proceed(chain.request().newBuilder()
-                    .header("Accept", "application/vnd.github.v3+json")
-                    .build())
+            //provides json as default accept type
+            val request = chain.request()
+            if (request.header("Accept") == null) {
+                chain.proceed(request
+                        .newBuilder()
+                        .header("Accept", "application/vnd.github.v3+json")
+                        .build())
+            } else
+                chain.proceed(request)
+
+
         }
     }
 
