@@ -13,7 +13,6 @@ import sandbox.myapplication.common.viewmodel.ViewModelFactory
 import sandbox.myapplication.search.SearchRepoViewModel
 import javax.inject.Inject
 
-
 class SearchListFragment : ToolbarFragment() {
     @Inject
     lateinit var factory: ViewModelFactory<SearchRepoViewModel>
@@ -44,6 +43,8 @@ class SearchListFragment : ToolbarFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val readmeFileUrl = ("https://api.github.com/repos/square/retrofit/readme")
+
         getActionBar().setDisplayShowTitleEnabled(false)
         getActionBar().setDisplayShowHomeEnabled(false)
         setHasOptionsMenu(true)
